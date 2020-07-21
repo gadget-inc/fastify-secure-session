@@ -44,6 +44,8 @@ module.exports = fp(function (fastify, options, next) {
     }
 
     if (!(key instanceof Array) && key.length < sodium.crypto_secretbox_KEYBYTES) {
+      console.warn("SECURE-SESSION error", {key: key});
+      console.trace();
       return next(new Error(`key must be at least ${sodium.crypto_secretbox_KEYBYTES} bytes`))
     } else if (key instanceof Array && key.some(k => k < sodium.crypto_secretbox_KEYBYTES)) {
       return next(new Error(`key lengths must be at least ${sodium.crypto_secretbox_KEYBYTES} bytes`))
